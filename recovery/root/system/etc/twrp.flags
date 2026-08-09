@@ -29,6 +29,9 @@
 
 /persist            ext4        /dev/block/bootdevice/by-name/persist            flags=fsflags=ro;display="Persist"
 
+/data               f2fs        /dev/block/bootdevice/by-name/userdata           flags=display="Data";storage;wipeingui;quota;fileencryption=ice
+
+
 #Auto-generated code by FOTA Portal
 /dtbo               emmc        /dev/block/bootdevice/by-name/dtbo               flags=backup=1;display="DTBO";flashimg=1
 
