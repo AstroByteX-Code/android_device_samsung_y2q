@@ -25,25 +25,46 @@
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 
+# init.recovery.qcom.rc
+# Recovery init script based on stock init.qcom.rc
+
 import /init.recovery.qcom_decrypt.rc
 
 on fs
     wait /dev/block/platform/soc/${ro.boot.bootdevice}
     symlink /dev/block/platform/soc/${ro.boot.bootdevice} /dev/block/bootdevice
-    
+
     export ANDROID_ROOT /system_root
-    
-    # Mount firmware
+
+    # Mount firmware and persist partitions
     mkdir /vendor/firmware_mnt
     mount ext4 /dev/block/bootdevice/by-name/persist /mnt/vendor/persist rw
     mount ext4 /dev/block/bootdevice/by-name/efs /mnt/vendor/efs rw
     mount vfat /dev/block/bootdevice/by-name/apnhlos /vendor/firmware_mnt ro
 
+    # Stock symlinks for vendor mount points
+    symlink /vendor/firmware_mnt /firmware
+    symlink /vendor/bt_firmware /bt_firmware
+    symlink /vendor/dsp /dsp
+
 on post-fs-data
-    mkdir /data/vendor/keymaster
+    # Keymaster storage
+    mkdir /data/vendor/keymaster 0770 system system
+
+    # Recovery misc dirs
+    mkdir /data/vendor/misc 0770 system system
+    mkdir /data/vendor/misc/qti_fp 0770 system system
 
 on boot
+    # Start health HAL
     start health-hal-2-1
+
+    # Set default brightness permissions
+    chown system system /sys/class/backlight/panel0-backlight/brightness
+    chown system system /sys/class/backlight/panel0-backlight/max_brightness
+
+    # Console loglevel
+    write /proc/sys/kernel/printk "6 6 1 7"
 
 on property:crypto.ready=1
     start keymaster-sb-4-0
@@ -55,7 +76,9 @@ on property:crypto.ready=0
     stop spdaemon
     stop sec_nvm
 
+# Handle user cancel of decryption
 on property:twrp.user.0.decrypt=0
     umount /vendor/firmware_mnt
     umount /mnt/vendor/efs
     umount /mnt/vendor/persist
+
