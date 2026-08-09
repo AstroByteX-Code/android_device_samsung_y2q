@@ -120,15 +120,13 @@ TARGET_USES_MKE2FS := true
 
 # TWRP specific build flags
 TW_MAINTAINER := AstroByteX-Code
-TW_DEVICE_VERSION := AstroForge_v1
+TW_DEVICE_VERSION := AstroForge_v3
 TW_THEME := portrait_hdpi
-TW_SCREEN_BLANK_ON_BOOT := true
 TW_NO_SCREEN_BLANK=true
 TW_INPUT_BLACKLIST := "hbtp_vm"
 TW_BRIGHTNESS_PATH := "/sys/class/backlight/panel0-backlight/brightness"
-TW_MAX_BRIGHTNESS := 25500
-TW_DEFAULT_BRIGHTNESS := 12800
-TW_BRIGHTNESS_PATH := "/sys/class/backlight/panel/brightness"
+TW_MAX_BRIGHTNESS := 50000
+TW_DEFAULT_BRIGHTNESS := 16666
 TW_CUSTOM_CPU_TEMP_PATH := "/sys/class/thermal/thermal_zone17/temp"
 TW_Y_OFFSET := 100
 TW_H_OFFSET := -100
