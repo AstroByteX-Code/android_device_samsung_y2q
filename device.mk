@@ -41,7 +41,9 @@ PRODUCT_PACKAGES += \
 # Dependencies
 TARGET_RECOVERY_DEVICE_MODULES += \
     libion \
-    libdmabufheap
+    libdmabufheap \
+    libandroidicu \
+    libxml2
 
 RECOVERY_LIBRARY_SOURCE_FILES += \
     $(TARGET_OUT_SHARED_LIBRARIES)/libion.so \
